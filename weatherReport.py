@@ -6,7 +6,7 @@ import datetime
 import threading, os
 
 cities = {
-1:{"ru":"Варшава", "en":"Warsaw", "latitude":"25.13", "longitude":"21.02"},
+1:{"ru":"Варшава", "en":"Warsaw", "latitude":"52.22", "longitude":"21.01"},
 2:{"ru":"Минск", "en":"Minsk", "latitude":"53.55", "longitude":"27.33"},
 3:{"ru":"Москва", "en":"Moscow", "latitude":"55.44", "longitude":"24.00"}
 }
@@ -86,7 +86,7 @@ class Ui_MainWindow(object):
         self.timeLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.timeLabel.setObjectName("timeLabel")
         self.humidityLabel = QtWidgets.QLabel(self.tab)
-        self.humidityLabel.setGeometry(QtCore.QRect(80, 150, 140, 20))
+        self.humidityLabel.setGeometry(QtCore.QRect(50, 150, 200, 20))
         self.humidityLabel.setStyleSheet("color: rgb(255, 255, 255);")
         self.humidityLabel.setScaledContents(True)
         self.humidityLabel.setAlignment(QtCore.Qt.AlignCenter)
@@ -162,7 +162,7 @@ class Ui_MainWindow(object):
         self.windSpeedLabel.setText(_translate("MainWindow", str(obj["hourly"]["wind_speed_10m"][int(ct[0])]) + " KM/H"))
         self.countryLabel.setText(_translate("MainWindow", cities[city][languages[lang]["lang"]]))
         self.timeLabel.setText(_translate("MainWindow", ct[0] + ":" + ct[1]))
-        self.humidityLabel.setText(_translate("MainWindow", translate["relhum"][languages[lang]["lang"]] + str(obj["hourly"]["relative_humidity_2m"][int(ct[0])]) + "%"))
+        self.humidityLabel.setText(_translate("MainWindow", translate["relhum"][languages[lang]["lang"]] + " " + str(obj["hourly"]["relative_humidity_2m"][int(ct[0])]) + "%"))
         self.progressBar.setProperty("value", obj["hourly"]["relative_humidity_2m"][int(ct[0])])
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", translate["weather"][languages[lang]["lang"]]))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", translate["settings"][languages[lang]["lang"]]))
