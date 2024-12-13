@@ -5,16 +5,16 @@ import json
 import datetime
 import threading, os
 
-cities = {
-1:{"ru":"Варшава", "en":"Warsaw", "latitude":"52.22", "longitude":"21.01"},
-2:{"ru":"Минск", "en":"Minsk", "latitude":"53.55", "longitude":"27.33"},
-3:{"ru":"Москва", "en":"Moscow", "latitude":"55.44", "longitude":"24.00"}
-}
+cities = [
+{"ru":"Варшава", "en":"Warsaw", "latitude":"52.22", "longitude":"21.01"},
+{"ru":"Минск", "en":"Minsk", "latitude":"53.55", "longitude":"27.33"},
+{"ru":"Москва", "en":"Moscow", "latitude":"55.44", "longitude":"24.00"}
+]
 
-languages = {
-1:{"title":"English", "lang":"en"},
-2:{"title":"Русский", "lang":"ru"}
-}
+languages = [
+{"title":"English", "lang":"en"},
+{"title":"Русский", "lang":"ru"}
+]
 
 translate = {
 "weather":{"en":"Weather", "ru":"Погода"},
@@ -23,8 +23,8 @@ translate = {
 
 }
 
-city = 1
-lang = 1
+city = 0
+lang = 0
 
 
 class Ui_MainWindow(object):
@@ -109,20 +109,20 @@ class Ui_MainWindow(object):
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        self.combobox = QtWidgets.QComboBox(self.tab_2)
-        self.combobox.setGeometry(100, 50, 100, 20)
+        self.cityChange = QtWidgets.QComboBox(self.tab_2)
+        self.cityChange.setGeometry(100, 50, 100, 20)
 
         self.changeLanguages = QtWidgets.QComboBox(self.tab_2)
         self.changeLanguages.setGeometry(100, 100, 100, 20)
 
-        for number, language in enumerate(languages):
-            self.changeLanguages.addItem(languages[language]["title"])
+        for l in languages:
+            self.changeLanguages.addItem(l["title"])
 
         for index, value in enumerate(cities):
-            self.combobox.addItem(cities[index + 1][languages[lang]["lang"]])
+            self.cityChange.addItem(cities[index][languages[lang]["lang"]])
 
 
-        self.combobox.currentIndexChanged.connect(self.on_combobox_changed)
+        self.cityChange.currentIndexChanged.connect(self.on_language_changet)
         self.changeLanguages.currentIndexChanged.connect(self.on_language_changet)
 
         self.autoUpdate(MainWindow)
@@ -132,15 +132,15 @@ class Ui_MainWindow(object):
     def closeEvent(self, value):
         os._exit(1)
 
-    def on_combobox_changed(self, value):
+    def on_city_changed(self, value):
 
-        self.changeCity(value + 1)
+        self.changeCity(value)
 
     def on_language_changet(self, language):
-            self.changeLanguage(language + 1)
+            self.changeLanguage(language)
 
             for index, CITY in enumerate(cities):
-                self.combobox.setItemText(index, cities[city][languages[lang]["lang"]])
+                self.cityChange.setItemText(index, cities[index][languages[lang]["lang"]])
 
 
     def retranslateUi(self, MainWindow):
