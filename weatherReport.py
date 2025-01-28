@@ -5,22 +5,38 @@ import json
 import datetime
 import threading, os
 
+
 cities = [
-{"ru":"Варшава", "en":"Warsaw", "latitude":"52.22", "longitude":"21.01"},
-{"ru":"Минск", "en":"Minsk", "latitude":"53.55", "longitude":"27.33"},
-{"ru":"Москва", "en":"Moscow", "latitude":"55.44", "longitude":"24.00"}
+    {"ru":"Варшава", "en":"Warsaw", "pl":"Warszawa", "latitude":"52.22", "longitude":"21.01"},
+    {"ru":"Минск", "en":"Minsk", "pl":"Minsk","latitude":"53.55", "longitude":"27.33"},
+    {"ru":"Москва", "en":"Moscow", "pl":"Moskwa" ,"latitude":"55.44", "longitude":"24.00"},
+    {"ru":"Стокгольм", "en":"Stockholm", "pl":"Sztokholm", "latitude":"59.2", "longitude":"18.04"},
+    {"ru":"Берлин", "en":"Berlin", "pl":"Berlin", "latitude":"52.3", "longitude":"13.2"},
+    {"ru":"Стамбул", "en":"Istanbul", "pl":"Stambuł", "latitude":"41.0", "longitude":"28.5"},
 ]
 
 languages = [
-{"title":"English", "lang":"en"},
-{"title":"Русский", "lang":"ru"}
+    {"title":"English", "lang":"en"},
+    {"title":"Русский", "lang":"ru"},
+    {"title":"Polski", "lang":"pl"}
 ]
 
 translate = {
-"weather":{"en":"Weather", "ru":"Погода"},
-"relhum":{"en":"Relative humidity", "ru":"Относительная влажность"},
-"settings":{"en":"Settings", "ru":"Настройки"},
-
+    "weather":{
+        "en":"Weather",
+        "ru":"Погода",
+        "pl":"Pogoda"
+    },
+    "relhum":{
+        "en":"Relative humidity",
+        "ru":"Относительная влажность",
+        "pl":"Wilgotność względna"
+    },
+    "settings":{
+        "en":"Settings",
+        "ru":"Настройки",
+        "pl":"Opcje"
+    }
 }
 
 city = 0
@@ -29,91 +45,122 @@ lang = 0
 
 class Ui_MainWindow(object):
 
-    def changeCity(self, cityID):
+
+    def change_city(self, cityID):
         global city
         city = cityID
         ui.retranslateUi(mainWindow)
 
-    def changeLanguage(self, language):
+    def change_language(self, language):
         global lang
         lang = language
-        print(lang)
         ui.retranslateUi(mainWindow)
 
     def setupUi(self, MainWindow):
+
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(300, 500)
         MainWindow.setStyleSheet("background-color: rgb(102, 207, 255);")
+
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
         self.tabWidget.setGeometry(QtCore.QRect(0, 0, 300, 500))
         self.tabWidget.setObjectName("tabWidget")
+
         self.tab = QtWidgets.QWidget()
         self.tab.setObjectName("tab")
+
         self.tempLabel = QtWidgets.QLabel(self.tab)
         self.tempLabel.setGeometry(QtCore.QRect(100, 50, 100, 80))
+
         font = QtGui.QFont()
         font.setPointSize(28)
         font.setBold(True)
         font.setWeight(75)
+
         self.tempLabel.setFont(font)
         self.tempLabel.setStyleSheet("color: rgb(255, 255, 255);")
         self.tempLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.tempLabel.setObjectName("tempLabel")
-        self.countryLabel = QtWidgets.QLabel(self.tab)
-        self.countryLabel.setGeometry(QtCore.QRect(110, 10, 80, 20))
+
+        self.cityLabel = QtWidgets.QLabel(self.tab)
+        self.cityLabel.setGeometry(QtCore.QRect(0, 10, 300, 20))
+
         font = QtGui.QFont()
         font.setPointSize(18)
         font.setBold(True)
         font.setWeight(75)
-        self.countryLabel.setFont(font)
-        self.countryLabel.setStyleSheet("color: rgb(255, 255, 255);")
-        self.countryLabel.setAlignment(QtCore.Qt.AlignCenter)
-        self.countryLabel.setObjectName("countryLabel")
+
+        self.cityLabel.setFont(font)
+        self.cityLabel.setStyleSheet("color: rgb(255, 255, 255);")
+        self.cityLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.cityLabel.setObjectName("cityLabel")
+
         self.windSpeedLabel = QtWidgets.QLabel(self.tab)
         self.windSpeedLabel.setGeometry(QtCore.QRect(120, 120, 60, 16))
+
         font = QtGui.QFont()
         font.setStrikeOut(False)
+
         self.windSpeedLabel.setFont(font)
         self.windSpeedLabel.setStyleSheet("color: rgb(255, 255, 255);")
         self.windSpeedLabel.setTextFormat(QtCore.Qt.AutoText)
         self.windSpeedLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.windSpeedLabel.setObjectName("windSpeedLabel")
+
         self.timeLabel = QtWidgets.QLabel(self.tab)
         self.timeLabel.setGeometry(QtCore.QRect(120, 30, 60, 16))
         self.timeLabel.setStyleSheet("color: rgb(255, 255, 255);")
         self.timeLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.timeLabel.setObjectName("timeLabel")
+
         self.humidityLabel = QtWidgets.QLabel(self.tab)
         self.humidityLabel.setGeometry(QtCore.QRect(50, 150, 200, 20))
         self.humidityLabel.setStyleSheet("color: rgb(255, 255, 255);")
         self.humidityLabel.setScaledContents(True)
         self.humidityLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.humidityLabel.setObjectName("humidityLabel")
-        self.progressBar = QtWidgets.QProgressBar(self.tab)
-        self.progressBar.setGeometry(QtCore.QRect(90, 140, 121, 71))
-        self.progressBar.setMinimum(0)
-        self.progressBar.setProperty("value", 89)
-        self.progressBar.setOrientation(QtCore.Qt.Horizontal)
-        self.progressBar.setTextDirection(QtWidgets.QProgressBar.TopToBottom)
-        self.progressBar.setObjectName("progressBar")
-        self.tabWidget.addTab(self.tab, "")
-        self.tab_2 = QtWidgets.QWidget()
-        self.tab_2.setObjectName("tab_2")
 
-        self.tabWidget.addTab(self.tab_2, "")
+        self.humProgressBar = QtWidgets.QProgressBar(self.tab)
+        self.humProgressBar.setGeometry(QtCore.QRect(90, 140, 120, 70))
+        self.humProgressBar.setMinimum(0)
+        self.humProgressBar.setProperty("value", 89)
+        self.humProgressBar.setOrientation(QtCore.Qt.Horizontal)
+        self.humProgressBar.setTextDirection(QtWidgets.QProgressBar.TopToBottom)
+        self.humProgressBar.setObjectName("humProgressBar")
+
+        self.hourlyTemp = QtWidgets.QLabel(self.tab)
+        self.hourlyTemp.setGeometry(QtCore.QRect(20, 190, 125, 10))
+        self.hourlyTemp.setStyleSheet("color: rgb(255, 255, 255);")
+        self.hourlyTemp.setAlignment(QtCore.Qt.AlignCenter)
+        self.hourlyTemp.setObjectName("hourlyTemp")
+
+        self.tabWidget.addTab(self.tab, "")
+
+        self.extendedWeather = QtWidgets.QWidget()
+        self.extendedWeather.setObjectName("extended_weather")
+
+        self.settingsTab = QtWidgets.QWidget()
+        self.settingsTab.setObjectName("settingsTab")
+
+        self.tabWidget.addTab(self.extendedWeather, "")
+        self.tabWidget.addTab(self.settingsTab, "")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
+
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        self.cityChange = QtWidgets.QComboBox(self.tab_2)
+
+        self.cityChange = QtWidgets.QComboBox(self.settingsTab)
         self.cityChange.setGeometry(100, 50, 100, 20)
 
-        self.changeLanguages = QtWidgets.QComboBox(self.tab_2)
+        self.changeLanguages = QtWidgets.QComboBox(self.settingsTab)
         self.changeLanguages.setGeometry(100, 100, 100, 20)
+
 
         for l in languages:
             self.changeLanguages.addItem(l["title"])
@@ -121,23 +168,24 @@ class Ui_MainWindow(object):
         for index, value in enumerate(cities):
             self.cityChange.addItem(cities[index][languages[lang]["lang"]])
 
+        self.cityChange.currentIndexChanged.connect(self.on_city_changed)
+        self.changeLanguages.currentIndexChanged.connect(self.on_language_changed)
 
-        self.cityChange.currentIndexChanged.connect(self.on_language_changet)
-        self.changeLanguages.currentIndexChanged.connect(self.on_language_changet)
 
-        self.autoUpdate(MainWindow)
+        self.auto_update(MainWindow)
 
-        QMainWindow.closeEvent = self.closeEvent
+        QMainWindow.closeEvent = self.close_event
 
-    def closeEvent(self, value):
+
+    def close_event(self, value):
         os._exit(1)
 
     def on_city_changed(self, value):
 
-        self.changeCity(value)
+        self.change_city(value)
 
-    def on_language_changet(self, language):
-            self.changeLanguage(language)
+    def on_language_changed(self, language):
+            self.change_language(language)
 
             for index, CITY in enumerate(cities):
                 self.cityChange.setItemText(index, cities[index][languages[lang]["lang"]])
@@ -145,32 +193,57 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
 
+        it = 5
+
         current_time = datetime.datetime.now().time()
         ct = str(current_time).split(":")
 
-        print(lang)
-
-
-        obj = self.getWeather(cities[city]["latitude"], cities[city]["longitude"])
+        obj = self.get_weather(cities[city]["latitude"], cities[city]["longitude"])
         time_str = str(obj["hourly"]["time"][0])[-5:]
 
 
-
         _translate = QtCore.QCoreApplication.translate
+
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+
         self.tempLabel.setText(_translate("MainWindow", str(obj["hourly"]["temperature_2m"][int(ct[0])]) + "°C"))
+
         self.windSpeedLabel.setText(_translate("MainWindow", str(obj["hourly"]["wind_speed_10m"][int(ct[0])]) + " KM/H"))
-        self.countryLabel.setText(_translate("MainWindow", cities[city][languages[lang]["lang"]]))
+
+        self.cityLabel.setText(_translate("MainWindow", cities[city][languages[lang]["lang"]]))
+
         self.timeLabel.setText(_translate("MainWindow", ct[0] + ":" + ct[1]))
+
         self.humidityLabel.setText(_translate("MainWindow", translate["relhum"][languages[lang]["lang"]] + " " + str(obj["hourly"]["relative_humidity_2m"][int(ct[0])]) + "%"))
-        self.progressBar.setProperty("value", obj["hourly"]["relative_humidity_2m"][int(ct[0])])
+
+        self.humProgressBar.setProperty("value", obj["hourly"]["relative_humidity_2m"][int(ct[0])])
+
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", translate["weather"][languages[lang]["lang"]]))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", translate["settings"][languages[lang]["lang"]]))
 
-        print(str(obj["hourly"]["temperature_2m"][int(ct[0])]) + "°C")
-        print(city)
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.settingsTab), _translate("MainWindow", translate["settings"][languages[lang]["lang"]]))
 
-    def autoUpdate(self, MainWindow):
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.extendedWeather), _translate("MainWindow","24H"))
+
+        for index in range(int(ct[0]), int(ct[0]) + 24):
+
+            time = obj["hourly"]["time"][index].split("T")
+            it += 18
+
+            hl = QtWidgets.QLabel(self.extendedWeather)
+            hl.setGeometry(20, it, 120, 15)
+            hl.setStyleSheet("background-color: rgb(89, 192, 230);")
+            hl.setAlignment(QtCore.Qt.AlignCenter)
+            hl.setText(time[-1])
+
+            hw = QtWidgets.QLabel(self.extendedWeather)
+            hw.setGeometry(150, it, 120, 15)
+            hw.setStyleSheet("background-color: rgb(89, 192, 230);")
+            hw.setAlignment(QtCore.Qt.AlignCenter)
+            hw.setText(str(obj["hourly"]["temperature_2m"][index]) + "°C")
+
+
+    def auto_update(self, MainWindow):
+
         current_time = datetime.datetime.now().time()
         ct = str(current_time).split(":")
         seconds = float(ct[2])
@@ -179,10 +252,10 @@ class Ui_MainWindow(object):
         if seconds == 0:
             self.retranslateUi(MainWindow)
 
-        self.timer = threading.Timer(1, self.autoUpdate, [MainWindow], {})
+        self.timer = threading.Timer(1, self.auto_update, [MainWindow], {})
         self.timer.start()
 
-    def getWeather(self, latitude, longitude):
+    def get_weather(self, latitude, longitude):
         session = requests.Session()
         response = session.get("https://api.open-meteo.com/v1/forecast?latitude="+latitude+"&longitude="+longitude+"&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m")
         obj = json.loads(response.text)
