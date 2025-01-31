@@ -8,6 +8,6 @@
 
 ![скриншот программы](/screenshot.png)
 
-[MacOs Download](https://github.com/4awka-4a9/weather/blob/main/dist/weather%20report%20installer.dmg "Download for MacOs")
+[MacOs Download](https://media.githubusercontent.com/media/4awka-4a9/weather/main/dist/weather%20report%20installer.dmg/ "Download for MacOs")
 
-[Windows Download](https://github.com/4awka-4a9/weather/blob/main/dist/weatherReport/weatherReport "Download for Windows")
+[Windows Download](https://raw.githubusercontent.com/4awka-4a9/weather/main/dist/weatherReport/weatherReport/ "Download for Windows")
