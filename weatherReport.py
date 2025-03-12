@@ -201,6 +201,9 @@ class Ui_MainWindow(object):
         obj = self.get_weather(cities[city]["latitude"], cities[city]["longitude"])
         time_str = str(obj["hourly"]["time"][0])[-5:]
 
+        if ct[0] == "-0":
+            ct[0] = "0"
+
 
         _translate = QtCore.QCoreApplication.translate
 
