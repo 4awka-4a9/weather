@@ -36,7 +36,12 @@ translate = {
         "en":"Settings",
         "ru":"Настройки",
         "pl":"Opcje"
-    }
+    },
+    "donate":{
+        "en":"Donate",
+        "ru":"Потдержка",
+        "pl":"Wsparcie"
+    },
 }
 
 city = 0
@@ -145,8 +150,12 @@ class Ui_MainWindow(object):
         self.settingsTab = QtWidgets.QWidget()
         self.settingsTab.setObjectName("settingsTab")
 
+        self.donateTab = QtWidgets.QWidget()
+        self.donateTab.setObjectName("donateTab")
+
         self.tabWidget.addTab(self.extendedWeather, "")
         self.tabWidget.addTab(self.settingsTab, "")
+        self.tabWidget.addTab(self.donateTab, "")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -161,6 +170,41 @@ class Ui_MainWindow(object):
         self.changeLanguages = QtWidgets.QComboBox(self.settingsTab)
         self.changeLanguages.setGeometry(100, 100, 100, 20)
 
+        self.BTCtext = QLabel(self.donateTab)
+        self.BTCtext.setGeometry(10, 25, 100, 20)
+        self.BTCtext.setText("BTC:")
+
+        self.ETHtext = QLabel(self.donateTab)
+        self.ETHtext.setGeometry(10, 75, 100, 20)
+        self.ETHtext.setText("ETH:")
+
+        self.USDTTtext = QLabel(self.donateTab)
+        self.USDTTtext.setGeometry(10, 125, 100, 20)
+        self.USDTTtext.setText("USDT TRC 20:")
+
+        self.USDTEtext = QLabel(self.donateTab)
+        self.USDTEtext.setGeometry(10, 175, 100, 20)
+        self.USDTEtext.setText("USDT ERC 20:")
+
+        self.BTCcopy = QLineEdit(self.donateTab)
+        self.BTCcopy.setGeometry(10, 50, 270, 20)
+        self.BTCcopy.setText("bc1qml9r2f7qud0zsatjf3kh4c6v9yetd8zer52t97")
+        self.BTCcopy.setReadOnly(True)
+
+        self.ETHcopy = QLineEdit(self.donateTab)
+        self.ETHcopy.setGeometry(10, 100, 270, 20)
+        self.ETHcopy.setText("0xc3006CD922641337053BfB34a919299754002Fa6")
+        self.ETHcopy.setReadOnly(True)
+
+        self.USDTTcopy = QLineEdit(self.donateTab)
+        self.USDTTcopy.setGeometry(10, 150, 270, 20)
+        self.USDTTcopy.setText("TJ1Zc5Y2SsNLMaQKzdy9XFT5iLAZHx7zGZ")
+        self.USDTTcopy.setReadOnly(True)
+
+        self.USDTEcopy = QLineEdit(self.donateTab)
+        self.USDTEcopy.setGeometry(10, 200, 270, 20)
+        self.USDTEcopy.setText("0xc3006CD922641337053BfB34a919299754002Fa6")
+        self.USDTEcopy.setReadOnly(True)
 
         for l in languages:
             self.changeLanguages.addItem(l["title"])
@@ -227,6 +271,8 @@ class Ui_MainWindow(object):
 
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.extendedWeather), _translate("MainWindow","24H"))
 
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.donateTab), _translate("MainWindow", translate["donate"][languages[lang]["lang"]]))
+
         for index in range(int(ct[0]), int(ct[0]) + 24):
 
             time = obj["hourly"]["time"][index].split("T")
@@ -243,6 +289,9 @@ class Ui_MainWindow(object):
             hw.setStyleSheet("background-color: rgb(89, 192, 230);")
             hw.setAlignment(QtCore.Qt.AlignCenter)
             hw.setText(str(obj["hourly"]["temperature_2m"][index]) + "°C")
+
+
+
 
 
     def auto_update(self, MainWindow):
