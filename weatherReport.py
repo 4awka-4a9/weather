@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.Qt import *
+from PyQt5 import Qt
 import requests
 import json
 import datetime
@@ -205,6 +206,11 @@ class Ui_MainWindow(object):
         self.USDTEcopy.setGeometry(10, 200, 270, 20)
         self.USDTEcopy.setText("0xc3006CD922641337053BfB34a919299754002Fa6")
         self.USDTEcopy.setReadOnly(True)
+
+        self.githubLink = QLabel(self.donateTab)
+        self.githubLink.setGeometry(125, 250, 40, 20)
+        self.githubLink.setText("<a href=\"https://github.com/4awka-4a9/weather.git\">github</a>")
+        self.githubLink.setOpenExternalLinks(True)
 
         for l in languages:
             self.changeLanguages.addItem(l["title"])
